@@ -11,6 +11,7 @@
 
 namespace Tymon\JWTAuth\Providers;
 
+use Tymon\JWTAuth\Http\Parser\Cookies;
 use Tymon\JWTAuth\Http\Parser\LumenRouteParams;
 
 class LumenServiceProvider extends AbstractServiceProvider
@@ -29,6 +30,9 @@ class LumenServiceProvider extends AbstractServiceProvider
 
         $this->extendAuthGuard();
 
-        $this->app['tymon.jwt.parser']->addParser(new LumenRouteParams);
+        $this->app['tymon.jwt.parser']->addParser([
+            new LumenRouteParams,
+            new Cookies($this->config('decrypt_cookies')),
+        ]);
     }
 }
